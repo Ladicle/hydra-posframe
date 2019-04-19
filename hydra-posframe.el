@@ -61,49 +61,34 @@ Only `background` is used in this face."
 (defvar hydra-posframe-buffer " *hydra-posframe-buffer*"
   "The posframe-buffer used by hydra-posframe.")
 
-(defun hydra-posframe-keyboard-quit ()
-  "Quitting function similar to `keyboard-quit'."
-  (interactive)
-  (hydra-disable)
-  (cancel-timer hydra-timeout-timer)
-  (cancel-timer hydra-message-timer)
-  (setq hydra-curr-map nil)
-  (unless (and hydra--ignore
-               (null hydra--work-around-dedicated))
-    (posframe-hide hydra-posframe-buffer))
-  nil)
+(defun hydra-posframe-hide-window ()
+  "Hide the hydra posframe"
+  (posframe-hide hydra-posframe-buffer))
 
-(defun hydra-posframe-show-hint (hint caller)
-  (let ((verbosity (plist-get (cdr (assoc caller hydra-props-alist))
-                              :verbosity)))
-    (cond ((eq verbosity 0))
-          ((eq verbosity 1)
-           (message (eval hint)))
-          (t
-           (when hydra-is-helpful
-	     (posframe-show
-              hydra-posframe-buffer
-              :poshandler 'posframe-poshandler-frame-center
-              :foreground-color (face-foreground 'hydra-posframe-face nil t)
-              :background-color (face-background 'hydra-posframe-face nil t)
-	      :internal-border-width hydra-posframe-border-width
-	      :internal-border-color (face-attribute 'hydra-posframe-border-face :background)
-              :string (eval hint)
-	      :override-parameters hydra-posframe-parameters)
-             (let ((current-frame
-                    (buffer-local-value 'posframe--frame
-                                        (get-buffer hydra-posframe-buffer))))
-	       (redirect-frame-focus current-frame
-                                     (frame-parent current-frame))))))))
+(defun hydra-posframe-show-window (str)
+  "Show hydra hints on the posframe"
+  (posframe-show
+   hydra-posframe-buffer
+   :poshandler 'posframe-poshandler-frame-center
+   :foreground-color (face-foreground 'hydra-posframe-face nil t)
+   :background-color (face-background 'hydra-posframe-face nil t)
+   :internal-border-width hydra-posframe-border-width
+   :internal-border-color (face-attribute 'hydra-posframe-border-face :background)
+   :string str
+   :override-parameters hydra-posframe-parameters)
+  (let ((current-frame
+         (buffer-local-value 'posframe--frame
+                             (get-buffer hydra-posframe-buffer))))
+    (redirect-frame-focus current-frame
+                          (frame-parent current-frame))))
 
 ;;;###autoload
 (defun hydra-posframe-enable ()
   "Enable hydra-posframe."
   (interactive)
   (require 'hydra)
-  (advice-add 'hydra-keyboard-quit :override #'hydra-posframe-keyboard-quit)
-  (advice-add 'hydra-show-hint :override #'hydra-posframe-show-hint)
-  (message "hydra-posframe is enabled, disabling it need to reboot emacs."))
+  (add-to-list 'hydra-hint-display-alist (list 'hydra-posframe #'hydra-posframe-show-window #'hydra-posframe-hide-window))
+  (setq hydra-hint-display-type 'hydra-posframe))
 
 (provide 'hydra-posframe)
 ;;; hydra-posframe.el ends here
