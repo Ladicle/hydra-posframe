@@ -46,6 +46,11 @@ When 0, no border is showed."
   :group 'hydra-posframe
   :type 'number)
 
+(defcustom hydra-posframe-poshandler 'posframe-poshandler-frame-center
+  "The poshandler used by hydra-posframe."
+  :group 'hydra-posframe
+  :type 'function)
+
 (defface hydra-posframe-face
   '((t :inherit default))
   "The background and foreground color of the posframe.
@@ -69,7 +74,7 @@ Only `background` is used in this face."
   "Show hydra hints on the posframe"
   (posframe-show
    hydra-posframe-buffer
-   :poshandler 'posframe-poshandler-frame-center
+   :poshandler hydra-posframe-poshandler
    :foreground-color (face-foreground 'hydra-posframe-face nil t)
    :background-color (face-background 'hydra-posframe-face nil t)
    :internal-border-width hydra-posframe-border-width
