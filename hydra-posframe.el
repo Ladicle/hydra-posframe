@@ -88,12 +88,30 @@ Only `background` is used in this face."
                           (frame-parent current-frame))))
 
 ;;;###autoload
+(define-minor-mode hydra-posframe-mode
+  "Display hydra via posframe."
+  :init-value nil
+  :global t
+  :require 'hydra-posframe
+  :group 'hydra-posframe
+  (let ((hydra-posframe-list (list 'hydra-posframe
+                                   #'hydra-posframe-show-window
+                                   #'hydra-posframe-hide-window)))
+    (if hydra-posframe-mode
+        (progn
+          (add-to-list 'hydra-hint-display-alist hydra-posframe-list)
+          (setq hydra-hint-display-type 'hydra-posframe))
+      (progn
+        (setq hydra-hint-display-alist
+              (delete hydra-posframe-list hydra-hint-display-alist))
+        (setq hydra-hint-display-type 'lv)))))
+
+;;;###autoload
 (defun hydra-posframe-enable ()
   "Enable hydra-posframe."
   (interactive)
-  (require 'hydra)
-  (add-to-list 'hydra-hint-display-alist (list 'hydra-posframe #'hydra-posframe-show-window #'hydra-posframe-hide-window))
-  (setq hydra-hint-display-type 'hydra-posframe))
+  (hydra-posframe-mode 1)
+  (message "hydra-posframe: suggest use `hydra-posframe-mode` instead."))
 
 (provide 'hydra-posframe)
 ;;; hydra-posframe.el ends here
