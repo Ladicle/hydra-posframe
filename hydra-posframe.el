@@ -86,7 +86,7 @@ Only `background` is used in this face."
    :background-color (face-background 'hydra-posframe-face nil t)
    :border-width hydra-posframe-border-width
    :border-color (face-attribute 'hydra-posframe-border-face :background)
-   :string str
+   :string (concat str "\n")
    :override-parameters hydra-posframe-parameters)
   (let ((current-frame
          (buffer-local-value 'posframe--frame
