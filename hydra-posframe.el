@@ -51,6 +51,12 @@ When 0, no border is showed."
   :group 'hydra-posframe
   :type 'function)
 
+(defcustom hydra-posframe-font nil
+  "The font used by hydra-posframe.
+When nil, Using current frame's font as fallback."
+  :group 'hydra-posframe
+  :type 'string)
+
 (defface hydra-posframe-face
   '((t :inherit default))
   "The background and foreground color of the posframe.
@@ -74,6 +80,7 @@ Only `background` is used in this face."
   "Show hydra hints on the posframe"
   (posframe-show
    hydra-posframe-buffer
+   :font hydra-posframe-font
    :poshandler hydra-posframe-poshandler
    :foreground-color (face-foreground 'hydra-posframe-face nil t)
    :background-color (face-background 'hydra-posframe-face nil t)
