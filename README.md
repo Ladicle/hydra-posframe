@@ -7,17 +7,19 @@ hydra-posframe is a hydra extension which shows hydra hints on posframe.
 ## Installation
 
 ```
-;; NOTE: required hydra and posframe
+;; NOTE: hydra and posframe are required
 (use-package hydra-posframe
-  :load-path "<path-to-the-hydra-posframe>"
+  :el-get "Ladicle/hydra-posframe"
   :hook (after-init . hydra-posframe-enable))
 ```
 
 ## Customization
 
 ### Variables
-- **hydra-posframe-parameters**: override the posframe parameters(e.g. fringe)
+- **hydra-posframe-parameters**: override the posframe parameters (e.g. fringe) (default: `nil`)
 - **hydra-posframe-border-width**: change the posframe border width (default: `1`)
+- **hydra-posframe-poshandler**: posframe position (default: `'posframe-poshandler-frame-center`)
+- **hydra-posframe-font**: font for posframe (default: `nil`)
 
 ### Faces
 - **hydra-posframe-face**: customize the posframe fore/background
