@@ -10,7 +10,7 @@ hydra-posframe is a hydra extension which shows hydra hints on posframe.
 ;; NOTE: hydra and posframe are required
 (use-package hydra-posframe
   :el-get "Ladicle/hydra-posframe"
-  :hook (after-init . hydra-posframe-enable))
+  :hook (after-init . hydra-posframe-mode))
 ```
 
 ## Customization
